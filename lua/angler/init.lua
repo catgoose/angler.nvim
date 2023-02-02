@@ -3,7 +3,8 @@ local e, cnf = require("angler.edit"), require("angler.config")
 M = {}
 
 M.setup = function(config)
-	config = cnf.init(config)
+	config = config or {}
+	cnf.init(config)
 end
 
 M.open = function(config)
