@@ -6,8 +6,8 @@ M.setup = function(config)
 	config = cnf.init(config)
 end
 
-M.component = function(config)
-	return e.component(config)
+M.open = function(config)
+	return e.open(config)
 end
 
 M.open_cwd = function(config)
