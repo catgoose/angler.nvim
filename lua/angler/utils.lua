@@ -15,12 +15,6 @@ M.dev = function()
 	end
 end
 
-M.file_has_extension = function(extension)
-	local cur_name = vim.api.nvim_buf_get_name(0)
-	local tbl_file = vim.split(cur_name, ".", { plain = true })
-	return tbl_file[#tbl_file] == extension
-end
-
 local tbl_index = function(tbl, value)
 	for i, v in ipairs(tbl) do
 		if v == value then
