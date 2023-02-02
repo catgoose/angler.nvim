@@ -8,6 +8,7 @@ M.setup = function(config)
 end
 
 M.open = function(config)
+	config = config or {}
 	return e.open(config)
 end
 

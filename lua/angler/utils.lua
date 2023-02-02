@@ -35,6 +35,7 @@ local files_in_cwd = function()
 end
 
 M.next_file_in_cwd = function(config)
+	config = config or { order = "next" }
 	local files = files_in_cwd()
 	local index = tbl_index(files, vim.fn.expand("%"))
 	if #files <= 1 then

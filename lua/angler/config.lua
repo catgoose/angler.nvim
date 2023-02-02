@@ -18,6 +18,7 @@ M.init = function(opts)
 end
 
 M.split = function(config)
+	config = config or {}
 	local defaults = {
 		extension = nil,
 		split = false,
@@ -27,6 +28,7 @@ M.split = function(config)
 end
 
 M.cwd = function(config)
+	config = config or {}
 	local defaults = {
 		order = "next",
 	}
