@@ -14,7 +14,7 @@ local split_edit = function(config, file)
 	c.edit(file)
 end
 
-M.component = function(config)
+M.open = function(config)
 	config = cfg.split(config)
 	if not config.extension then
 		return false
