@@ -49,28 +49,19 @@ M.next_file_in_cwd = function(config)
 	if index == #files and config.order == "next" then
 		return files[1]
 	end
-	if index == #files and config.order == "prev" then
+	if (index == 1 or index == #files) and config.order == "prev" then
 		return files[#files]
 	end
 	return files[index + config.direction]
 end
 
-M.base_name = function(extension)
-	local cur_name = vim.api.nvim_buf_get_name(0)
-	local tbl_file = split(cur_name, ".", { plain = true })
-	if tbl_file[#tbl_file - 1] .. "." .. tbl_file[#tbl_file] == "spec.ts" then
-		tbl_file[#tbl_file - 1] = nil
+M.component_name = function(extension)
+	local file_parts = vim.split(vim.fn.expand("%:t"), "component", { plain = true })
+	local file = vim.fn.expand("%:h") .. "/" .. file_parts[1] .. "component" .. "." .. extension
+	if vim.fn.filereadable(file) == 1 then
+		return file
 	end
-	tbl_file[#tbl_file] = nil
-	for i, n in ipairs(tbl_file) do
-		tbl_file[i] = n .. "."
-	end
-	tbl_file[#tbl_file + 1] = extension
-	local str_file = table.concat(tbl_file, "")
-	if fn.filereadable(str_file) ~= 1 then
-		return false
-	end
-	return table.concat(tbl_file)
+	return false
 end
 
 return M

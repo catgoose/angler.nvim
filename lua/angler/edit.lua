@@ -14,12 +14,12 @@ local split_edit = function(config, file)
 	c.edit(file)
 end
 
-M.angler = function(config)
+M.component = function(config)
 	config = cfg.split(config)
 	if not config.extension then
 		return false
 	end
-	local file = u.base_name(config.extension)
+	local file = u.component_name(config.extension)
 	if not file then
 		return false
 	end

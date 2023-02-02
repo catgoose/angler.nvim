@@ -1,3 +1,6 @@
+local u = require("angler.utils")
+local cmd = vim.cmd
+
 local M = {}
 
 M.new_component = function()
