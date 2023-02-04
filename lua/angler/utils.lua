@@ -1,4 +1,4 @@
-local fn, split = vim.fn, vim.split
+local fn, split, api = vim.fn, vim.split, vim.api
 
 local M = {}
 
@@ -57,6 +57,21 @@ M.component_name = function(extension)
 		return file
 	end
 	return false
+end
+
+M.create_cmd = function(command, f, opts)
+	opts = opts or {}
+	api.nvim_create_user_command(command, f, opts)
+end
+
+M.get_loaded_bufs = function()
+	local bufs = {}
+	for _, buf in ipairs(api.nvim_list_bufs()) do
+		if api.nvim_buf_is_loaded(buf) then
+			table.insert(bufs, buf)
+		end
+	end
+	return bufs
 end
 
 return M

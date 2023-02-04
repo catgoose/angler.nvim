@@ -5,3 +5,5 @@ if g.angler_loaded == 1 then
 else
 	g.angler_loaded = 1
 end
+
+require("angler.usercmd")
