@@ -28,6 +28,9 @@ local files_in_cwd = function()
 	local files = {}
 	for _, file in ipairs(split(fn.glob(fn.expand("%:h") .. "/*"), "\n", { plain = true })) do
 		if fn.filereadable(file) == 1 then
+			if file:match("^./") then
+				file = file:sub(3)
+			end
 			files[#files + 1] = file
 		end
 	end
