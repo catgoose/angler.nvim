@@ -72,7 +72,7 @@ M.rename_symbol = function()
 						cmd.write()
 						-- close bufs that were opened to rename symbol
 						if not vim.tbl_contains(loaded_bufs, bufnr) then
-							api.nvim_buf_delete(bufnr, { force = true })
+							api.nvim_buf_delete(bufnr, { force = false, unload = true })
 						end
 					end)
 				end, 0)
