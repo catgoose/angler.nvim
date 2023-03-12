@@ -1,7 +1,7 @@
 # angler.nvim
 
-A collection of Angular tools that I extracted out of my neovim config. The "edit"
-API can be used elsewhere since it takes an extension as a parameter.
+A collection of Angular tools that I extracted out of my neovim config. The
+"edit" API can be used elsewhere since it takes an extension as a parameter.
 
 ## API
 
@@ -31,9 +31,15 @@ local plugin = {
   keys = {
     {"<leader>gc", [[require("angler").open({extension = "ts"})]]},
     {"<leader>gh", [[require("angler").open({extension = "html"})]]},
-    {"<leader>gt", [[require("angler").open({extension = "html", split = true})]]},
+    {"<leader>gt", [[require("angler").open({
+        extension = "html",
+        split = true}
+        )]]},
     {"<leader>gd", [[require("angler").open({extension = "scss"})]]},
-    {"<leader>gs", [[require("angler").open({extension = "scss", split = "true"})]]},
+    {"<leader>gs", [[require("angler").open({
+        extension = "scss",
+        split = "true"
+        })]]},
     {"<leader>gf", [[require("angler").open({extension = "spec.ts"})]]},
     {"<leader>gn", [[require("angler").open_cwd({order = "next"})]]},
     {"<leader>gp", [[require("angler").open_cwd({order = "prev"})]]},
