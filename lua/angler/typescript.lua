@@ -35,7 +35,7 @@ local fix_vue = function()
 	local titles = {
 		"Add all missing imports",
 		"Organize Imports",
-		"Fix All",
+		-- "Fix All",
 	}
 	for _, title in pairs(titles) do
 		vim.lsp.buf.code_action({
