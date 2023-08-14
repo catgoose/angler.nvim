@@ -23,16 +23,44 @@ M.quick_fix = function()
 	cmd.cwindow()
 end
 
-M.fix_all = function(config)
-	config = config or { sync = true }
-	if not is_ts() then
-		return
-	end
+local fix_typescript = function()
 	local ts = require("typescript")
 	local sync = { sync = true }
 	ts.actions.addMissingImports(sync)
 	ts.actions.removeUnused(sync)
 	ts.actions.organizeImports(sync)
+end
+
+local fix_vue = function()
+	local titles = {
+		"Add all missing imports",
+		"Organize Imports",
+		"Fix All",
+	}
+	for _, title in pairs(titles) do
+		vim.lsp.buf.code_action({
+			context = {
+				only = { "source", "source.organizeImports" },
+			},
+			filter = function(ca)
+				return string.find(ca.title, title)
+			end,
+			apply = true,
+		})
+	end
+end
+
+M.fix_all = function(config)
+	config = config or { sync = true }
+	if not is_ts() then
+		return
+	end
+	local isVolar = vim.lsp.get_clients({ name = "volar" })[1] ~= nil
+	if isVolar then
+		fix_vue()
+	else
+		fix_typescript()
+	end
 end
 
 M.rename_file = function()
