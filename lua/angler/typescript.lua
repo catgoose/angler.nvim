@@ -1,8 +1,6 @@
 local cmd, fn, ui, lsp, api = vim.cmd, vim.fn, vim.ui, vim.lsp, vim.api
 local u = require("angler.utils")
 
---  TODO: 2023-08-13 - make these actions compatible with volar when in vue
---  workspace.  Use folke/neoconf?
 local M = {}
 
 local is_ts = function()
