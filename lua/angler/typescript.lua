@@ -11,14 +11,20 @@ local is_ts = function()
 end
 
 local compile = function()
-	cmd.compiler("tsc")
-	cmd.make("--noEmit")
+	local isVolar = vim.lsp.get_clients({ name = "volar" })[1] ~= nil
+	if isVolar then
+		cmd.compiler("vue-tsc")
+		cmd.make("--noEmit -p tsconfig.vitest.json --composite false")
+	else
+		cmd.compiler("tsc")
+		cmd.make("--noEmit")
+	end
 end
 
 M.quick_fix = function()
-	if not is_ts() then
-		return
-	end
+	-- if not is_ts() then
+	-- 	return
+	-- end
 	compile()
 	cmd.cwindow()
 end
