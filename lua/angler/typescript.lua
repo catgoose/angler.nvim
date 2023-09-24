@@ -26,7 +26,10 @@ M.quick_fix = function()
 	-- 	return
 	-- end
 	compile()
-	cmd.cwindow()
+	if #vim.fn.getqflist() > 0 then
+		cmd.copen()
+		-- cmd.cwindow()
+	end
 end
 
 local fix_typescript = function()
