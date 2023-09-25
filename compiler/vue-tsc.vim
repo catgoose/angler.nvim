@@ -10,7 +10,9 @@ endif
 let s:cpo_save = &cpo
 set cpo&vim
 
-CompilerSet makeprg=node_modules/.bin/vue-tsc
+" If vue-tsc is not installed globally
+"CompilerSet makeprg=node_modules/.bin/vue-tsc
+CompilerSet makeprg=vue-tsc
 CompilerSet errorformat=%f\ %#(%l\\,%c):\ %trror\ TS%n:\ %m,
 		       \%trror\ TS%n:\ %m,
 		       \%-G%.%#
