@@ -10,7 +10,7 @@ A collection of Angular tools that I extracted out of my neovim config. The
 - Opens file in cwd that shares basename with the current file with the
   supplied extension appended
 
-Call `require("angler")` with `.open(config)` or `.open_cwd(config)`
+Call `require("angler").open(config)`
 Open takes the following configuration parameter:
 
 ```lua
@@ -22,6 +22,44 @@ Open takes the following configuration parameter:
 ```
 
 ### open_cwd
+
+- Open next or previous file in the current directory
+
+Call `require("angler").open_cwd(config)`
+Open takes the following configuration parameter:
+
+```lua
+{
+  order = "next", -- ordering of file open in cwd
+  -- next or prev
+}
+```
+
+## User commands
+
+```lua
+AnglerPopulateQF
+AnglerFixAll
+AnglerRenameFile
+AnglerRenameSymbol
+
+```
+
+### AnglerPopulateQF
+
+Compiles with tsc and opens quickfix if issues were found
+
+### AnglerFixAll
+
+Fixes typescript issues
+
+### AnglerRenameFile
+
+Renames typescript file with `ui.input`
+
+### AnglerRenameSymbol
+
+Renames typescript symbol in workspace with `ui.input`
 
 ## Example setup with Lazy.nvim
 
