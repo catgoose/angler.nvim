@@ -21,7 +21,7 @@ local compile = function()
 	end
 end
 
-M.quick_fix = function()
+M.compile_ts = function()
 	-- if not is_ts() then
 	-- 	return
 	-- end

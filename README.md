@@ -38,14 +38,14 @@ Open takes the following configuration parameter:
 ## User commands
 
 ```lua
-AnglerPopulateQF
+AnglerCompile
 AnglerFixAll
 AnglerRenameFile
 AnglerRenameSymbol
 
 ```
 
-### AnglerPopulateQF
+### AnglerCompile
 
 Compiles with tsc and opens quickfix if issues were found
 
