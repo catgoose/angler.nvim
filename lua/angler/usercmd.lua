@@ -1,6 +1,12 @@
-local c, ts = require("angler.utils").create_cmd, require("angler.typescript")
+local c, ts, a = require("angler.utils").create_cmd, require("angler.typescript"), require("angler")
 
 c("AnglerCompile", ts.compile_ts)
 c("AnglerFixAll", ts.fix_all)
 c("AnglerRenameFile", ts.rename_file)
 c("AnglerRenameSymbol", ts.rename_symbol)
+c("AnglerOpenNext", function()
+	a.open_cwd({ order = "next" })
+end)
+c("AnglerOpenPrev", function()
+	a.open_cwd({ order = "prev" })
+end)
