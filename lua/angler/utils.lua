@@ -54,7 +54,9 @@ M.next_file_in_cwd = function(config)
 end
 
 M.component_name = function(extension)
-	local file_parts = vim.split(vim.fn.expand("%:t"), "component", { plain = true })
+	local cur_file = vim.fn.expand("%:t")
+	cur_file = type(cur_file) == "string" and cur_file or cur_file[1]
+	local file_parts = vim.split(cur_file, "component", { plain = true })
 	local file = vim.fn.expand("%:h") .. "/" .. file_parts[1] .. "component" .. "." .. extension
 	if vim.fn.filereadable(file) == 1 then
 		return file
