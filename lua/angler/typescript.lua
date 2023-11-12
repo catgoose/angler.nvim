@@ -59,6 +59,7 @@ local fix_vue = function()
 	end
 end
 
+--  TODO: 2023-11-11 - This doesn't work great for vue
 M.fix_all = function(config)
 	config = config or { sync = true }
 	if not is_ts() then
@@ -72,6 +73,7 @@ M.fix_all = function(config)
 	end
 end
 
+--  TODO: 2023-11-11 - implement write_all
 M.rename_file = function()
 	if not is_ts() then
 		return
@@ -87,6 +89,7 @@ M.rename_file = function()
 	end)
 end
 
+--  TODO: 2023-11-11 - refactor this.  create write_all
 M.rename_symbol = function()
 	local pos_param = lsp.util.make_position_params()
 	local loaded_bufs = u.get_loaded_bufs()
