@@ -47,7 +47,7 @@ Utils.next_file_in_cwd = function(config)
 	if index == #files and config.order == "next" then
 		return files[1]
 	end
-	if (index == 1 or index == #files) and config.order == "prev" then
+	if index == 1 and config.order == "prev" then
 		return files[#files]
 	end
 	return files[index + config.direction]
