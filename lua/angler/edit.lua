@@ -1,7 +1,7 @@
 local c = vim.cmd
 local u, cfg = require("angler.utils"), require("angler.config")
 
-local M = {}
+local Edit = {}
 
 local split_edit = function(config, file)
 	config = config or {}
@@ -15,7 +15,7 @@ local split_edit = function(config, file)
 	c.edit(file)
 end
 
-M.open = function(config)
+Edit.open = function(config)
 	config = config or {}
 	config = cfg.split(config)
 	if not config.extension then
@@ -28,11 +28,11 @@ M.open = function(config)
 	split_edit(config, file)
 end
 
-M.cwd = function(config)
+Edit.cwd = function(config)
 	config = config or {}
 	config = cfg.cwd(config)
 	local file = u.next_file_in_cwd(config)
 	c.edit(file)
 end
 
-return M
+return Edit

@@ -1,4 +1,4 @@
-local M = {
+local Config = {
 	opts = {
 		dev = false,
 	},
@@ -8,16 +8,16 @@ local dev = function()
 	require("angler.utils").dev()
 end
 
-M.init = function(opts)
+Config.init = function(opts)
 	opts = opts or {}
-	M.opts = vim.tbl_deep_extend("keep", opts, M.opts)
-	if M.opts.dev then
+	Config.opts = vim.tbl_deep_extend("keep", opts, Config.opts)
+	if Config.opts.dev then
 		dev()
 	end
-	return M.opts
+	return Config.opts
 end
 
-M.split = function(config)
+Config.split = function(config)
 	config = config or {}
 	local defaults = {
 		extension = nil,
@@ -27,7 +27,7 @@ M.split = function(config)
 	return vim.tbl_extend("keep", config, defaults)
 end
 
-M.cwd = function(config)
+Config.cwd = function(config)
 	config = config or {}
 	local defaults = {
 		order = "next",
@@ -37,4 +37,4 @@ M.cwd = function(config)
 	return cfg
 end
 
-return M
+return Config

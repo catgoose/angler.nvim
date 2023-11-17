@@ -1,14 +1,7 @@
 local cmd, fn, ui, lsp, api = vim.cmd, vim.fn, vim.ui, vim.lsp, vim.api
-local u = require("angler.utils")
+local utils = require("angler.utils")
 
---  TODO: 2023-08-13 - make these actions compatible with volar when in vue
---  workspace.  Use folke/neoconf?
-local M = {}
-
-local is_ts = function()
-	local fts = { "typescript", "typescriptreact", "typescript.tsx", "vue" }
-	return vim.tbl_contains(fts, api.nvim_buf_get_option(0, "filetype"))
-end
+local Typescript = {}
 
 local compile = function()
 	local isVolar = vim.lsp.get_clients({ name = "volar" })[1] ~= nil
@@ -21,7 +14,7 @@ local compile = function()
 	end
 end
 
-M.compile_ts = function()
+Typescript.compile_ts = function()
 	-- if not is_ts() then
 	-- 	return
 	-- end
@@ -35,7 +28,7 @@ end
 local fix_typescript = function()
 	local ts = require("typescript")
 	local sync = { sync = true }
-	ts.actions.addMissingImports(sync)
+	ts.actions.addTypescriptissingImports(sync)
 	ts.actions.removeUnused(sync)
 	ts.actions.organizeImports(sync)
 end
@@ -60,9 +53,9 @@ local fix_vue = function()
 end
 
 --  TODO: 2023-11-11 - This doesn't work great for vue
-M.fix_all = function(config)
+Typescript.fix_all = function(config)
 	config = config or { sync = true }
-	if not is_ts() then
+	if not utils.is_typescript() then
 		return
 	end
 	local isVolar = vim.lsp.get_clients({ name = "volar" })[1] ~= nil
@@ -74,12 +67,12 @@ M.fix_all = function(config)
 end
 
 --  TODO: 2023-11-11 - implement write_all
-M.rename_file = function()
-	if not is_ts() then
+Typescript.rename_file = function()
+	if not utils.is_typescript() then
 		return
 	end
 	local file_name = fn.expand("%:t")
-	ui.input({ prompt = "Rename file> ", default = file_name }, function(input)
+	ui.input({ prompt = "Angler: Rename file> ", default = file_name }, function(input)
 		if not input then
 			return
 		end
@@ -89,12 +82,11 @@ M.rename_file = function()
 	end)
 end
 
---  TODO: 2023-11-11 - refactor this.  create write_all
-M.rename_symbol = function()
+Typescript.rename_symbol = function()
 	local pos_param = lsp.util.make_position_params()
-	local loaded_bufs = u.get_loaded_bufs()
+	local loaded_bufs = utils.get_loaded_bufs()
 	pos_param.oldName = fn.expand("<cword>")
-	ui.input({ prompt = "Rename to> ", default = pos_param.oldName }, function(input)
+	ui.input({ prompt = "Angler: Rename to> ", default = pos_param.oldName }, function(input)
 		if not input then
 			return
 		end
@@ -110,18 +102,17 @@ M.rename_symbol = function()
 			lsp.handlers["textDocument/rename"](err, result, ...)
 			for uri, _ in pairs(result.changes) do
 				local bufnr = vim.uri_to_bufnr(uri)
-				vim.defer_fn(function()
+				vim.schedule(function()
 					api.nvim_buf_call(bufnr, function()
 						cmd.write()
-						-- close bufs that were opened to rename symbol
 						if not vim.tbl_contains(loaded_bufs, bufnr) then
 							api.nvim_buf_delete(bufnr, { force = false, unload = true })
 						end
 					end)
-				end, 0)
+				end)
 			end
 		end)
 	end)
 end
 
-return M
+return Typescript

@@ -1,8 +1,8 @@
 local fn, split, api = vim.fn, vim.split, vim.api
 
-local M = {}
+local Utils = {}
 
-M.dev = function()
+Utils.dev = function()
 	P = function(...)
 		local tbl = {}
 		for i = 1, select("#", ...) do
@@ -37,7 +37,7 @@ local files_in_cwd = function()
 	return files
 end
 
-M.next_file_in_cwd = function(config)
+Utils.next_file_in_cwd = function(config)
 	config = config or { order = "next" }
 	local files = files_in_cwd()
 	local index = tbl_index(files, vim.fn.expand("%"))
@@ -53,7 +53,7 @@ M.next_file_in_cwd = function(config)
 	return files[index + config.direction]
 end
 
-M.component_name = function(extension)
+Utils.component_name = function(extension)
 	local cur_file = vim.fn.expand("%:t")
 	cur_file = type(cur_file) == "string" and cur_file or cur_file[1]
 	local file_parts = vim.split(cur_file, "component", { plain = true })
@@ -64,12 +64,12 @@ M.component_name = function(extension)
 	return false
 end
 
-M.create_cmd = function(command, f, opts)
+Utils.create_cmd = function(command, f, opts)
 	opts = opts or {}
 	api.nvim_create_user_command(command, f, opts)
 end
 
-M.get_loaded_bufs = function()
+Utils.get_loaded_bufs = function()
 	local bufs = {}
 	for _, buf in ipairs(api.nvim_list_bufs()) do
 		if api.nvim_buf_is_loaded(buf) then
@@ -79,4 +79,9 @@ M.get_loaded_bufs = function()
 	return bufs
 end
 
-return M
+Utils._is_typescript = function()
+	local fts = { "typescript", "typescriptreact", "typescript.tsx", "vue" }
+	return vim.tbl_contains(fts, api.nvim_buf_get_option(0, "filetype"))
+end
+
+return Utils
