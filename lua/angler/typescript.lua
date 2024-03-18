@@ -11,7 +11,7 @@ local is_ts = function()
 end
 
 local compile = function()
-	local isVolar = vim.lsp.get_clients({ name = "volar" })[1] ~= nil
+	local isVolar = vim.fn.filereadable("vite.config.ts") == 1
 	if isVolar then
 		cmd.compiler("vue-tsc")
 		cmd.make("--noEmit -p tsconfig.vitest.json --composite false")
