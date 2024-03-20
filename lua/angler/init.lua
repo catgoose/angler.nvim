@@ -1,6 +1,6 @@
 local e, cnf, ts = require("angler.edit"), require("angler.config"), require("angler.typescript")
 
-M = {}
+local M = {}
 
 M.setup = function(config)
 	config = config or {}
