@@ -7,26 +7,12 @@ local M = {}
 
 local is_ts = function()
 	local fts = { "typescript", "typescriptreact", "typescript.tsx", "vue" }
-	return vim.tbl_contains(fts, vim.bo.filetype)
+	return vim.tbl_contains(fts, api.nvim_buf_get_option(0, "filetype"))
 end
 
 local compile = function()
-	local isVue = false
-	local clients = vim.lsp.get_clients({ name = "tsserver" })
-	if
-		clients[1]
-		and clients[1].config
-		and clients[1].config.init_options
-		and clients[1].config.init_options.plugins
-	then
-		for _, tsserver_plugin in ipairs(clients[1].config.init_options.plugins) do
-			if tsserver_plugin.name == "@vue/typescript-plugin" then
-				isVue = true
-				break
-			end
-		end
-	end
-	if isVue then
+	local isVolar = vim.fn.filereadable("vite.config.ts") == 1
+	if isVolar then
 		cmd.compiler("vue-tsc")
 		cmd.make("--noEmit -p tsconfig.vitest.json --composite false")
 	else
