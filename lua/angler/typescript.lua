@@ -14,7 +14,7 @@ local compile = function()
 	local isVolar = vim.fn.filereadable("vite.config.ts") == 1
 	if isVolar then
 		cmd.compiler("vue-tsc")
-		cmd.make("--noEmit -p tsconfig.vitest.json --composite false")
+		cmd.make("--noEmit -p tsconfig.vitest.json")
 	else
 		cmd.compiler("tsc")
 		cmd.make("--noEmit")
