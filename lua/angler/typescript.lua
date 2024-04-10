@@ -43,7 +43,7 @@ end
 local fix_vue = function()
 	local titles = {
 		"Add all missing imports",
-		"Organize Imports",
+		-- "Organize Imports",
 		-- "Fix All",
 	}
 	for _, title in pairs(titles) do
