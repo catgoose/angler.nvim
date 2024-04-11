@@ -7,23 +7,21 @@ local _opts = {
 	log_levels = { "trace", "debug", "info", "warn", "error", "fatal" },
 }
 
-function M.split(config)
-	config = config or {}
+function M.split(opts)
 	local defaults = {
 		extension = nil,
 		split = false,
 		direction = "right",
 	}
-	return vim.tbl_extend("keep", config, defaults)
+	return vim.tbl_extend("keep", opts, defaults)
 end
 
-function M.cwd(config)
-	config = config or {}
+function M.cwd(opts)
+	opts = opts or {}
 	local defaults = {
 		order = "next",
 	}
-	local cfg = vim.tbl_extend("keep", config, defaults)
-	cfg.direction = cfg.order == "next" and 1 or -1
+	local cfg = vim.tbl_extend("keep", opts, defaults)
 	return cfg
 end
 
