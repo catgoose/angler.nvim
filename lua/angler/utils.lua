@@ -2,7 +2,7 @@ local fn, split, api = vim.fn, vim.split, vim.api
 
 local M = {}
 
-M.dev = function()
+function M.dev()
 	P = function(...)
 		local tbl = {}
 		for i = 1, select("#", ...) do
@@ -15,7 +15,7 @@ M.dev = function()
 	end
 end
 
-local tbl_index = function(tbl, value)
+local function tbl_index()
 	for i, v in ipairs(tbl) do
 		if v == value then
 			return i
@@ -24,7 +24,7 @@ local tbl_index = function(tbl, value)
 	return nil
 end
 
-local files_in_cwd = function()
+local function files_in_cwd()
 	local files = {}
 	for _, file in ipairs(split(fn.glob(fn.expand("%:h") .. "/*"), "\n", { plain = true })) do
 		if fn.filereadable(file) == 1 then
@@ -37,7 +37,7 @@ local files_in_cwd = function()
 	return files
 end
 
-M.next_file_in_cwd = function(config)
+function M.next_file_in_cwd(config)
 	config = config or { order = "next" }
 	local files = files_in_cwd()
 	local index = tbl_index(files, vim.fn.expand("%"))
@@ -53,7 +53,7 @@ M.next_file_in_cwd = function(config)
 	return files[index + config.direction]
 end
 
-M.component_name = function(extension)
+function M.component_name(extension)
 	local file_parts = vim.split(vim.fn.expand("%:t"), "component", { plain = true })
 	local file = vim.fn.expand("%:h") .. "/" .. file_parts[1] .. "component" .. "." .. extension
 	if vim.fn.filereadable(file) == 1 then
@@ -62,12 +62,12 @@ M.component_name = function(extension)
 	return false
 end
 
-M.create_cmd = function(command, f, opts)
+function M.create_cmd(command, f, opts)
 	opts = opts or {}
 	api.nvim_create_user_command(command, f, opts)
 end
 
-M.get_loaded_bufs = function()
+function M.get_loaded_bufs()
 	local bufs = {}
 	for _, buf in ipairs(api.nvim_list_bufs()) do
 		if api.nvim_buf_is_loaded(buf) then
@@ -75,6 +75,16 @@ M.get_loaded_bufs = function()
 		end
 	end
 	return bufs
+end
+
+function M.string_format(msg, ...)
+	local args = { ... }
+	for i, v in ipairs(args) do
+		if type(v) == "table" then
+			args[i] = vim.inspect(v)
+		end
+	end
+	return string.format(msg, unpack(args))
 end
 
 return M

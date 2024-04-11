@@ -5,12 +5,12 @@ local u = require("angler.utils")
 --  workspace.  Use folke/neoconf?
 local M = {}
 
-local is_ts = function()
+local function is_ts()
 	local fts = { "typescript", "typescriptreact", "typescript.tsx", "vue" }
 	return vim.tbl_contains(fts, api.nvim_buf_get_option(0, "filetype"))
 end
 
-local compile = function()
+local function compile()
 	local isVolar = vim.fn.filereadable("vite.config.ts") == 1
 	if isVolar then
 		cmd.compiler("vue-tsc")
@@ -21,7 +21,7 @@ local compile = function()
 	end
 end
 
-M.compile_ts = function()
+function M.compile_ts()
 	-- if not is_ts() then
 	-- 	return
 	-- end
@@ -32,7 +32,7 @@ M.compile_ts = function()
 	end
 end
 
-local fix_typescript = function()
+local function fix_typescript()
 	local ts = require("typescript")
 	local sync = { sync = true }
 	ts.actions.addMissingImports(sync)
@@ -40,7 +40,7 @@ local fix_typescript = function()
 	ts.actions.organizeImports(sync)
 end
 
-local fix_vue = function()
+local function fix_vue()
 	local titles = {
 		"Add all missing imports",
 		-- "Organize Imports",
@@ -59,7 +59,7 @@ local fix_vue = function()
 	end
 end
 
-M.fix_all = function(config)
+function M.fix_all(config)
 	config = config or { sync = true }
 	if not is_ts() then
 		return
@@ -72,7 +72,7 @@ M.fix_all = function(config)
 	end
 end
 
-M.rename_file = function()
+function M.rename_file()
 	if not is_ts() then
 		return
 	end
@@ -87,7 +87,7 @@ M.rename_file = function()
 	end)
 end
 
-M.rename_symbol = function()
+function M.rename_symbol()
 	local pos_param = lsp.util.make_position_params()
 	local loaded_bufs = u.get_loaded_bufs()
 	pos_param.oldName = fn.expand("<cword>")

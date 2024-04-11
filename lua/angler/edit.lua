@@ -3,7 +3,7 @@ local u, cfg = require("angler.utils"), require("angler.config")
 
 local M = {}
 
-local split_edit = function(config, file)
+local function split_edit()
 	config = config or {}
 	if config.split == true then
 		if config.direction == "right" then
@@ -15,7 +15,7 @@ local split_edit = function(config, file)
 	c.edit(file)
 end
 
-M.open = function(config)
+function M.open(config)
 	config = config or {}
 	config = cfg.split(config)
 	if not config.extension then
@@ -28,7 +28,7 @@ M.open = function(config)
 	split_edit(config, file)
 end
 
-M.cwd = function(config)
+function M.cwd(config)
 	config = config or {}
 	config = cfg.cwd(config)
 	local file = u.next_file_in_cwd(config)

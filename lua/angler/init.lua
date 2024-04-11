@@ -1,24 +1,27 @@
-local e, cnf, ts = require("angler.edit"), require("angler.config"), require("angler.typescript")
+local edit = require("angler.edit")
+local config = require("angler.config")
+local typescript = require("angler.typescript")
 
 local M = {}
 
-M.setup = function(config)
-	config = config or {}
-	cnf.init(config)
+function M.setup(opts)
+	opts = opts or {}
+	config.set_opts(opts)
+	M.Log = require("angler.logger").init()
 end
 
-M.open = function(config)
-	config = config or {}
-	return e.open(config)
+function M.open(opts)
+	opts = opts or {}
+	return edit.open(opts)
 end
 
-M.open_cwd = function(config)
-	return e.cwd(config)
+function M.open_cwd(opts)
+	return edit.cwd(opts)
 end
 
-M.ts_fix_all = function(config)
-	config = config or { sync = true }
-	ts.fix_all(config)
+function M.ts_fix_all(opts)
+	opts = opts or { sync = true }
+	typescript.fix_all(opts)
 end
 
 return M
