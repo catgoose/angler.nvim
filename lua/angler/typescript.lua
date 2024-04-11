@@ -1,4 +1,3 @@
-local cmd, fn, ui, lsp, api = vim.cmd, vim.fn, vim.ui, vim.lsp, vim.api
 local u = require("angler.utils")
 
 --  TODO: 2023-08-13 - make these actions compatible with volar when in vue
@@ -7,17 +6,18 @@ local M = {}
 
 local function is_ts()
 	local fts = { "typescript", "typescriptreact", "typescript.tsx", "vue" }
-	return vim.tbl_contains(fts, api.nvim_buf_get_option(0, "filetype"))
+	local contains = vim.tbl_contains(fts, vim.api.nvim_get_option_value("filetype", { buf = 0 }))
+	return contains
 end
 
 local function compile()
 	local isVolar = vim.fn.filereadable("vite.config.ts") == 1
 	if isVolar then
-		cmd.compiler("vue-tsc")
-		cmd.make("--noEmit -p tsconfig.vitest.json")
+		vim.cmd.compiler("vue-tsc")
+		vim.cmd.make("--noEmit -p tsconfig.vitest.json")
 	else
-		cmd.compiler("tsc")
-		cmd.make("--noEmit")
+		vim.cmd.compiler("tsc")
+		vim.cmd.make("--noEmit")
 	end
 end
 
@@ -27,7 +27,7 @@ function M.compile_ts()
 	-- end
 	compile()
 	if #vim.fn.getqflist() > 0 then
-		cmd.copen()
+		vim.cmd.copen()
 		-- cmd.cwindow()
 	end
 end
@@ -76,27 +76,27 @@ function M.rename_file()
 	if not is_ts() then
 		return
 	end
-	local file_name = fn.expand("%:t")
-	ui.input({ prompt = "Rename file> ", default = file_name }, function(input)
+	local file_name = vim.fn.expand("%:t")
+	vim.ui.input({ prompt = "Rename file> ", default = file_name }, function(input)
 		if not input then
 			return
 		end
-		local old_file = fn.expand("%:p:h") .. "/" .. file_name
-		local new_file = fn.expand("%:p:h") .. "/" .. input
+		local old_file = vim.fn.expand("%:p:h") .. "/" .. file_name
+		local new_file = vim.fn.expand("%:p:h") .. "/" .. input
 		require("typescript").renameFile(old_file, new_file)
 	end)
 end
 
 function M.rename_symbol()
-	local pos_param = lsp.util.make_position_params()
+	local pos_param = vim.lsp.util.make_position_params()
 	local loaded_bufs = u.get_loaded_bufs()
-	pos_param.oldName = fn.expand("<cword>")
-	ui.input({ prompt = "Rename to> ", default = pos_param.oldName }, function(input)
+	pos_param.oldName = vim.fn.expand("<cword>")
+	vim.ui.input({ prompt = "Rename to> ", default = pos_param.oldName }, function(input)
 		if not input then
 			return
 		end
 		pos_param.newName = input
-		lsp.buf_request(0, "textDocument/rename", pos_param, function(err, result, ...)
+		vim.lsp.buf_request(0, "textDocument/rename", pos_param, function(err, result, ...)
 			if not result or not result.changes then
 				vim.notify(
 					string.format("could not perform rename: %s --> %s", pos_param.oldName, pos_param.newName),
@@ -104,15 +104,15 @@ function M.rename_symbol()
 				)
 				return
 			end
-			lsp.handlers["textDocument/rename"](err, result, ...)
+			vim.lsp.handlers["textDocument/rename"](err, result, ...)
 			for uri, _ in pairs(result.changes) do
 				local bufnr = vim.uri_to_bufnr(uri)
 				vim.defer_fn(function()
-					api.nvim_buf_call(bufnr, function()
-						cmd.write()
+					vim.api.nvim_buf_call(bufnr, function()
+						vim.cmd.write()
 						-- close bufs that were opened to rename symbol
 						if not vim.tbl_contains(loaded_bufs, bufnr) then
-							api.nvim_buf_delete(bufnr, { force = false, unload = true })
+							vim.api.nvim_buf_delete(bufnr, { force = false, unload = true })
 						end
 					end)
 				end, 0)
