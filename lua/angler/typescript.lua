@@ -13,6 +13,7 @@ end
 local function compile()
 	local isVolar = vim.fn.filereadable("vite.config.ts") == 1
 	if isVolar then
+		--  TODO: 2024-04-12 - check if vue-tsc is executable.
 		vim.cmd.compiler("vue-tsc")
 		vim.cmd.make("--noEmit -p tsconfig.vitest.json")
 	else
