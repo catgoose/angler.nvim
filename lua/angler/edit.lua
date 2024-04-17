@@ -1,5 +1,5 @@
-local utils = require("angler.utils")
 local config = require("angler.config")
+local utils = require("angler.utils")
 local Log = require("angler").Log
 local sf = require("angler.utils").string_format
 
@@ -29,6 +29,8 @@ function M.open(opts)
 	split_edit(opts, file)
 end
 
+--  TODO: 2024-04-17 - accept config to return hidden files
+--  TODO: 2024-04-17 - handle hidden files correctly
 local function files_in_cwd()
 	local files = {}
 	for _, file in ipairs(vim.split(vim.fn.glob(vim.fn.expand("%:h") .. "/*"), "\n", { plain = true })) do
