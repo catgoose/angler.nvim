@@ -1,9 +1,7 @@
 local g = vim.g
 
 if g.angler_loaded == 1 then
-	return
+  return
 else
-	g.angler_loaded = 1
+  g.angler_loaded = 1
 end
-
-require("angler.usercmd")
