@@ -35,57 +35,26 @@ Open takes the following configuration parameter:
 }
 ```
 
-## User commands
-
-```lua
-AnglerCompile
-AnglerFixAll
-AnglerRenameFile
-AnglerRenameSymbol
-
-```
-
-### AnglerCompile
-
-Compiles with tsc and opens quickfix if issues were found
-
-### AnglerFixAll
-
-Fixes typescript issues
-
-### AnglerRenameFile
-
-Renames typescript file with `ui.input`
-
-### AnglerRenameSymbol
-
-Renames typescript symbol in workspace with `ui.input`
-
 ## Example setup with Lazy.nvim
 
 ```lua
 local plugin = {
   opts = opts,
   keys = {
-    {"<leader>gc", [[require("angler").open({extension = "ts"})]]},
-    {"<leader>gh", [[require("angler").open({extension = "html"})]]},
-    {"<leader>gt", [[require("angler").open({
+    { "<leader>gc", [[require("angler").open({extension = "ts"})]] },
+    { "<leader>gh", [[require("angler").open({extension = "html"})]] },
+    { "<leader>gt", [[require("angler").open({
         extension = "html",
         split = true}
-        )]]},
-    {"<leader>gd", [[require("angler").open({extension = "scss"})]]},
-    {"<leader>gs", [[require("angler").open({
+        )]] },
+    { "<leader>gd", [[require("angler").open({extension = "scss"})]] },
+    { "<leader>gs", [[require("angler").open({
         extension = "scss",
         split = "true"
-        })]]},
-    {"<leader>gf", [[require("angler").open({extension = "spec.ts"})]]},
-    {"<leader>gn", [[require("angler").open_cwd({order = "next"})]]},
-    {"<leader>gp", [[require("angler").open_cwd({order = "prev"})]]},
-    {"<leader>tc", [[AnglerPopulateQF]]},
-    {"<leader>tf", [[AnglerRenameFile]]},
-    {"<leader>k", [[AnglerFixAll]]},
+        })]] },
+    { "<leader>gf", [[require("angler").open({extension = "spec.ts"})]] },
+    { "<leader>gn", [[require("angler").open_cwd({order = "next"})]] },
+    { "<leader>gp", [[require("angler").open_cwd({order = "prev"})]] },
   },
-  ft = "typescript",
-  dependencies = "jose-elias-alvarez/typescript.nvim",
 }
 ```
